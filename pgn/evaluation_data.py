@@ -12,6 +12,11 @@ from .fen_generator import get_random_fen_from_games, get_random_fen
 from stockfish_api import StockFishEngine
 
 
+# This file is deprecated
+# It was used to create and generate training data
+
+
+# It is very similar to database_pgn.py and database_random.py and therefore not documented
 @dataclasses.dataclass
 class EvaluationDenseTrainingData:
     x_train: List[List[int]]

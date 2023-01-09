@@ -1,3 +1,6 @@
+# This file is for convenience
+# Sets default values for colors, sizes and more
+
 BOARD_LENGTH = 8
 FILES = BOARD_LENGTH
 RANKS = BOARD_LENGTH

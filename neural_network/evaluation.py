@@ -1,6 +1,5 @@
 import math
 import os
-import random
 from datetime import datetime
 
 import chess
@@ -14,13 +13,22 @@ from keras.saving.save import load_model
 from database.util import board_to_obs
 
 
+# This class describes the deep neural network used for board prediction
 class BoardEvaluationNetwork:
     model: Sequential
 
+    # Path to load the model
     def __init__(self, model_path: str = None):
         if model_path is not None:
             self.load_model(model_path)
 
+    # The following functions all use MSE as a loss function.
+    # During tests, I realised that this loss function works better than AbsoluteError or RootMeanSquaredError,
+    # so I decided to not make it a parameter
+
+    # We also use a sigmoid function since we want an output from -1 to 1
+
+    # Create a normal network with given parameters
     def create_dense_network(self, size: int, depth: int):
         input_layer = Input(shape=(14, 8, 8))
         x = input_layer
@@ -38,6 +46,7 @@ class BoardEvaluationNetwork:
             loss=MeanSquaredError()
         )
 
+    # Create a convolutional network with given parameters
     def create_convolutional_network(self, size: int, depth: int):
         input_layer = Input(shape=(14, 8, 8))
 
@@ -55,6 +64,7 @@ class BoardEvaluationNetwork:
             loss=MeanSquaredError()
         )
 
+    # Create a residual network with given parameters
     def create_residual_network(self, size, depth):
         input_layer = Input(shape=(14, 8, 8))
 
@@ -79,6 +89,7 @@ class BoardEvaluationNetwork:
             loss=MeanSquaredError()
         )
 
+    # Trains the given network using given parameters
     def train(self, save_folder: str, x_train, y_train, batch_size=None, epochs=None, steps_per_epoch=None,
               validation_split=0.1,
               callbacks=None):
@@ -95,10 +106,12 @@ class BoardEvaluationNetwork:
         )
         self.save_model(save_folder)
 
+    # Saves the model to local storage
     def save_model(self, save_folder: str):
         file_name = "/model_" + datetime.now().strftime("%d_%m_%Y-%H_%M_%S.h5")
         self.model.save(save_folder + file_name)
 
+    # Loads a model from local storage
     def load_model(self, model_path: str):
         if model_path.endswith(".h5"):
             if os.path.exists(model_path):
@@ -111,13 +124,15 @@ class BoardEvaluationNetwork:
         else:
             raise ValueError(f"Model file is not an '.h5' file.")
 
+    # Analyses a given board position and returns its evaluation
     def predict_evaluation(self, board: chess.Board):
         obs = board_to_obs(board)
         obs = numpy.expand_dims(obs, 0)  # Translate shape (None, 8, 8) into shape (14,8,8)
         evaluation = self.model(obs).numpy()[0][0]
         return evaluation
 
-    def get_move(self, board: chess.Board, depth=10):
+    # Returns what it thinks is the best move using a simple algorithm that checks all position
+    def get_move(self, board: chess.Board):
         evaluations = []
         moves = []
         for move in board.legal_moves:
@@ -135,6 +150,14 @@ class BoardEvaluationNetwork:
 
         return moves[index]
 
+    # Deprecated: Even with alpha beta pruning this minimax algorithm showed very slow performance
+    # It is therefore not considered as a viable choice for the network
+
+    # Scans all possible options from the current position up to a given depth
+    # Evaluates every "notable board position" and picks the best next position according to deeper board states
+
+    # Note: A "notable board position" is a position that is not too good for the enemy to get there and not that bad
+    # that it is nonsense to ever play that
     def get_move_minimax(self, board, depth=10):
         moves = []
         best_move = None

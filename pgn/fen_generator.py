@@ -6,6 +6,9 @@ import random
 from chess import WHITE, BLACK
 
 
+# This file is deprecated
+# It was used to help create and generate training data using the FEN (Forsyth-Edwards-Notation) -
+# a system to write board positions using a maximum of 80 and an average of 40 characters
 def get_random_fen_from_games(games: List[chess.pgn.Game]):
     board = chess.Board()
     game = random.choice(games)

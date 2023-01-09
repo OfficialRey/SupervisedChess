@@ -6,6 +6,9 @@ import chess.engine
 from database.util import board_to_obs, stockfish_evaluate, DataSet, DIRECTORY, save_dataset
 
 
+# This file is used to create random board positions
+
+# Create a random board by just playing random moves
 def random_board(max_depth=400):
     board = chess.Board()
     depth = random.randrange(0, max_depth)
@@ -18,6 +21,8 @@ def random_board(max_depth=400):
     return board
 
 
+# Create a dataset using random board positions with given size and analysis depth
+# Requires stockfish to work properly
 def create_random_dataset(dataset_size: int = 10_000, board_depth: int = 4):
     x_train = []
     y_train = []

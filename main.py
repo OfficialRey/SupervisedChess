@@ -11,11 +11,13 @@ from database.database_random import create_random_dataset, random_board, stockf
 from database.database_pgn import create_pgn_dataset
 
 
+# Create a dataset of given size
 def create_dataset(dataset_size=10_000):
     # Create dataset
     create_random_dataset(dataset_size=dataset_size)
 
 
+# Create a convolutional neural network
 def create_convolutional_network(pickle_folder: str, save_folder: str, size: int = 32, depth: int = 4,
                                  epochs: int = 500):
     x_train, y_train = load_datasets(pickle_folder)
@@ -32,6 +34,7 @@ def create_convolutional_network(pickle_folder: str, save_folder: str, size: int
     print(f"Actual Non-Normalized Score: {stockfish_score}")
 
 
+# Create a residual neural network for deeper connections
 def create_residual_network(pickle_folder: str, save_folder: str, size: int = 32, depth: int = 4, epochs: int = 1000):
     x_train, y_train = load_datasets(pickle_folder)
     x_train = numpy.array(x_train)
@@ -47,6 +50,7 @@ def create_residual_network(pickle_folder: str, save_folder: str, size: int = 32
     print(f"Actual Non-Normalized Score: {stockfish_score}")
 
 
+# Set up a playing environment to run the simulation
 def play(model_path: str):
     board = InteractiveBoard(button_folder=os.getcwd() + BUTTON_IMAGE_PATH, piece_folder=os.getcwd() + PIECE_IMAGE_PATH,
                              player_1=RandomEngine(), player_2=CustomEngine(
@@ -54,10 +58,12 @@ def play(model_path: str):
     board.run()
 
 
+# Create a non-random but instead grandmaster level dataset using pgn files
 def create_pgn_data():
     create_pgn_dataset(pgn_folder=os.getcwd() + "/database/pgn/", save_folder=os.getcwd() + "/datasets/pgn_trained/")
 
 
+# Run the program (driver)
 if __name__ == '__main__':
     play("C:/Users/reyof/PycharmProjects/SupervisedChess/models/pgn_trained/normalized_y/convolutional_1000.h5")
     # create_convolutional_network("C:/Users/reyof/PycharmProjects/SupervisedChess/datasets/pgn_data/", "C:/Users/reyof/PycharmProjects/SupervisedChess/models/pgn_trained/", 64, 18, 1000)

@@ -9,6 +9,9 @@ from keras.optimizers import Adam
 from datetime import date
 
 
+# This file was previously used and then became deprecated
+# It is the predecessor of the BoardEvaluationNetwork
+
 class EngineNetwork:
     model: Model
 

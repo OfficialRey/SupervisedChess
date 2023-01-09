@@ -17,7 +17,7 @@ class ChessAPI:
         self.board.reset_board()
         self.stockfish.set_fen_position("rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2")
 
-    def make_move(self, move:  str):
+    def make_move(self, move: str):
         if self.is_move_legal(move):
             print("Legal move")
             self.board.push(get_move_from_algebraic(move))

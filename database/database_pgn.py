@@ -7,6 +7,9 @@ from chess.pgn import read_game
 from database.util import board_to_obs, stockfish_evaluate, save_dataset
 
 
+# This file is used to create datasets from pgn files
+
+# The main function to create a pgn dataset
 def create_pgn_dataset(pgn_folder: str, save_folder: str):
     x_train = []
     y_train = []
@@ -25,6 +28,7 @@ def create_pgn_dataset(pgn_folder: str, save_folder: str):
     save_dataset(save_folder, x_train, y_train)
 
 
+# Retrieves data from a game
 def game_to_data(game: chess.pgn.Game):
     x = []
     y = []
@@ -40,5 +44,6 @@ def game_to_data(game: chess.pgn.Game):
     return x, y
 
 
+# Convenience and Testing function
 if __name__ == '__main__':
     create_pgn_dataset("C:/Users/reyof/PycharmProjects/SupervisedChess/database/pgn/")

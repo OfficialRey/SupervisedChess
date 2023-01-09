@@ -2,6 +2,10 @@ import chess
 from database.util import pgn_to_games, board_to_obs
 
 
+# This file is deprecated
+# It was used to create and generate training data
+# It's contents have been improved and moved to database_pgn.py and database_random.py
+
 def pgn_to_training_data(pgn_file_path: str):
     print("Collecting data...")
     x_train = []
